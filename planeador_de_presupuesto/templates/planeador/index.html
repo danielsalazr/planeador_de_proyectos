@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block container %}
+
+<link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.css" />
+<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.js"></script>
+
+
+<table id="myTable" class="display">
+    <thead>
+        <tr>
+          <th># Solicitud</th>
+          <th>nombre</th>
+          <th>area</th>
+          <th>Centro de costo</th>
+          <th>Desayuno</th>
+          <th>Almuerzo</th>
+          <th>Cena</th>
+          <th>Refrigerio</th>
+          <th>Jefe</th>
+          <th>Jefe Solicitante</th>
+          {% comment %} <th>area</th>
+          <th>Centro de Costo</th>
+          <th>jefe</th>
+          <th>fecha ingreso</th>
+          <th>fecha retiro</th> {% endcomment %}
+        </tr>
+    </thead>
+    <tbody id ='myTableBody'>
+    </tbody>
+</table>
+
+
+{% endblock container %}

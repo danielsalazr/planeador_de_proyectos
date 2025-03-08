@@ -3,6 +3,7 @@ from . import views
 
 
 urlpatterns = [
+    path('', views.templateArticulos, name="templateArticulos"),
     path('getInfoDatatable/', views.getInfoDatatable, name="getInfoDatatable"),
     # path('getRowsPaysForShippingMail/<str:database>', views.getRowsPaysForShippingMail, name="getRowsPaysForShippingMail"),
     # path('allMailsCustomer/<str:databaseSelect>', views.allMailsCustomer, name="allMails"),

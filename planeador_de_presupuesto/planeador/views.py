@@ -27,6 +27,12 @@ from datetime import datetime
 console = Console()
 
 
+
+def templateArticulos(request):
+
+    context = {}
+    
+    return render(request, "planeador/index.html", context)
 @api_view(('GET',))
 def getInfoDatatable(request):
 
