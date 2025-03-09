@@ -45,6 +45,11 @@ class Cable(models.Model):
     estado_cable = models.CharField(max_length=20, null=True, blank=True)
     fecha_actualizacion_cable = models.DateField(null=True, blank=True)
     fuente_precio = models.CharField(max_length=20, null=True, blank=True)
+    distancia_recorrido = models.FloatField(null=True, blank=True)
+    tipo_cable = models.CharField(max_length=20, null=True, blank=True)
+    corriente = models.FloatField(null=True, blank=True)
+    resistencia = models.FloatField(null=True, blank=True)
+    en_paralelo = models.BooleanField(default=False)
 
     def __str__(self):
         return self.codigo_refrid_cable

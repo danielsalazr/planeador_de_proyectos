@@ -20,6 +20,7 @@ from rich.console import Console
 from datetime import datetime
 
 from .models import Cable, Presupuesto, EquipoRefrigeracion, GrupoCable
+from .constants import RESISTENCIA_COBRE, RESISTENCIA_ALUMINIO
 
 console = Console()
 
@@ -54,13 +55,15 @@ def crear_grupo(request, equipo_id):
 @api_view(['POST'])
 def crear_cable(request, grupo_id):
     grupo = get_object_or_404(GrupoCable, id=grupo_id)
+    material_cable = request.data.get('material_cable')
+    resistencia = RESISTENCIA_COBRE if material_cable == 'cobre' else RESISTENCIA_ALUMINIO
     cable = Cable.objects.create(
         grupo=grupo,
         codigo_refrid_cable=request.data.get('codigo_refrid_cable'),
         descripcion_cable=request.data.get('descripcion_cable'),
         categoria_cable=request.data.get('categoria_cable'),
         aplicacion_cable=request.data.get('aplicacion_cable'),
-        material_cable=request.data.get('material_cable'),
+        material_cable=material_cable,
         temperatura_minima_operacion_cable=request.data.get('temperatura_minima_operacion_cable'),
         temperatura_maxima_operacion_cable=request.data.get('temperatura_maxima_operacion_cable'),
         consumo_nominal_cable=request.data.get('consumo_nominal_cable'),
@@ -74,12 +77,26 @@ def crear_cable(request, grupo_id):
         moneda_cable=request.data.get('moneda_cable'),
         estado_cable=request.data.get('estado_cable'),
         fecha_actualizacion_cable=request.data.get('fecha_actualizacion_cable'),
-        fuente_precio=request.data.get('fuente_precio')
+        fuente_precio=request.data.get('fuente_precio'),
+        distancia_recorrido=request.data.get('distancia_recorrido'),
+        tipo_cable=request.data.get('tipo_cable'),
+        corriente=request.data.get('corriente'),
+        resistencia=resistencia,
+        en_paralelo=request.data.get('en_paralelo', False)
     )
     return Response({'id': cable.id, 'codigo_refrid_cable': cable.codigo_refrid_cable}, status=status.HTTP_201_CREATED)
 
 def calcular_caida_tension(cable):
     # Implementa la lógica para calcular la caída de tensión
+    # Fórmula básica: caida_tension = (corriente * distancia_recorrido * resistencia) / 1000
+    if cable.corriente and cable.distancia_recorrido and cable.resistencia:
+        if cable.en_paralelo:
+            # Ajustar la resistencia para cables en paralelo
+            resistencia_ajustada = cable.resistencia / 2  # Suponiendo dos cables en paralelo
+        else:
+            resistencia_ajustada = cable.resistencia
+        caida_tension = (cable.corriente * cable.distancia_recorrido * resistencia_ajustada) / 1000
+        return caida_tension
     return 0.0
 
 def calcular_factor_agrupamiento(cable):
