@@ -3,6 +3,7 @@ django-environ==0.8
 django_extensions
 djangorestframework
 django-environ==0.8
+django-cors-headers
 django-excel
 fpdf2
 mysqlclient
