@@ -24,6 +24,10 @@ from io import BytesIO
 from rich.console import Console
 from datetime import datetime
 
+from .models import (
+    Planeacion,
+)
+
 console = Console()
 
 
@@ -35,6 +39,8 @@ def templateArticulos(request):
     return render(request, "planeador/index.html", context)
 @api_view(('GET',))
 def getInfoDatatable(request):
+
+    return Response({"response" : "hola mundo"}, status=status.HTTP_200_OK)
 
     query ="""
         SELECT
@@ -72,3 +78,13 @@ def getInfoDatatable(request):
     # console.log(users)
 
     return Response(results,status=status.HTTP_200_OK)
+
+
+@api_view(('GET',))
+def planes(request):
+    # elPlan = Planeacion.objects.filter(id=1).values()
+    elPlan = Planeacion.objects.all().values()
+
+    # return Response({"response" : "aprendimos algo  hoy"}, status=status.HTTP_200_OK)
+    return Response(elPlan, status=status.HTTP_200_OK)
+    # return Response({"response" : "hola mundo"}, status=status.HTTP_200_OK)

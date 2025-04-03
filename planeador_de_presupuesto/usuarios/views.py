@@ -4,6 +4,16 @@ from .form import Login
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
+from django.contrib.auth.models import User
+from django.http import JsonResponse
+
+
+from rest_framework.response import Response
+from rest_framework.decorators import api_view, renderer_classes
+from rest_framework.renderers import JSONRenderer, TemplateHTMLRenderer
+from rest_framework.views import APIView
+from rest_framework import status
+
 
 # Create your views here.
 
@@ -52,3 +62,14 @@ def login_user(request):
 def logout_user(request):
     logout(request)
     return redirect('/')
+
+
+
+@api_view(('GET',))
+def getUsuarios(request):
+
+    usuarios = User.objects.all().values()
+    
+    # return JsonResponse(usuarios)
+    return Response(usuarios, status=status.HTTP_200_OK)
+    # return Response({"response" : "hola usuario"}, status=status.HTTP_200_OK)
